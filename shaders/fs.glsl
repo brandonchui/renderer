@@ -1,7 +1,9 @@
 // shaders/fs.glsl
 #version 410 core
-uniform vec4 triangleColor;    // Add this uniform declaration
+
+uniform vec4 triangleColor;
 out vec4 color;
+
 void main() {
-    color = triangleColor;     // Use the uniform instead of hardcoded color
+    color = triangleColor;
 }
