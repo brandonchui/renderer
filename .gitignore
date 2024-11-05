@@ -1,0 +1,7 @@
+/.cache/
+/.zed/
+/build/
+.clang-format
+.clang-tidy
+CMakeLists.txt
+imgui.ini
