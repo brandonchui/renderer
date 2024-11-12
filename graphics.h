@@ -1,4 +1,6 @@
 #pragma once
+#include "ext/matrix_transform.hpp"
+#include "ext/vector_float3.hpp"
 #include <glad/glad.h>
 #include <string>
 
@@ -7,18 +9,30 @@
 #include <sstream>
 #include <cstdint>
 
+#include <vec3.hpp>
+#include <mat4x4.hpp>
+#include <glm.hpp>
+#include <gtc/matrix_transform.hpp>
+
 struct GraphicsState
 {
-	static constexpr uint8_t VERTEX_COUNT = 9;
+	static constexpr uint8_t VERTEX_COUNT = 12;
 
 	float color[4] = {1.0f, 0.5f, 0.0f, 1.0f};
 
 	GLuint graphicsPipelineShaderProgram = 0;
 	GLuint vao = 0;
 	GLuint vbo = 0;
+	GLuint ibo = 0;
 
-	GLfloat vertexPosition[VERTEX_COUNT] = {-0.8f, -0.8f, 0.0f, 0.8f, -0.8f,
-											0.0f,  0.0f,  0.8f, 0.0f};
+	GLuint iboData[6] = {0, 1, 2, 2, 1, 3};
+
+	GLfloat vertexPosition[VERTEX_COUNT] = {-0.8f, -0.8f, 0.0f, 0.8f, -0.8f, 0.0f,
+											-0.8f, 0.8f,  0.0f, 0.8f, 0.8f,	 0.0f};
+
+	//matrices model
+	glm::vec3 position = glm::vec3{0.0f, 0.0f, 0.0f};
+	glm::mat4 translate = glm::translate(glm::mat4(1.0f), position);
 };
 
 //////////////////////////////////////////////////
@@ -99,6 +113,11 @@ void InitializeGraphics(GraphicsState& state)
 	glBufferData(GL_ARRAY_BUFFER, sizeof(state.vertexPosition), state.vertexPosition,
 				 GL_STATIC_DRAW);
 
+	//index buffer
+	glGenBuffers(1, &state.ibo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, state.ibo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(state.iboData), state.iboData, GL_STATIC_DRAW);
+
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
@@ -112,4 +131,6 @@ void CleanupGraphics(GraphicsState& state)
 	glDeleteProgram(state.graphicsPipelineShaderProgram);
 	glDeleteBuffers(1, &state.vbo);
 	glDeleteVertexArrays(1, &state.vao);
+
+	glDeleteBuffers(1, &state.ibo);
 }

@@ -1,4 +1,5 @@
 #include <iostream>
+#include "SDL3/SDL_log.h"
 #include "graphics.h"
 
 //gl
@@ -12,6 +13,8 @@
 #include <imgui.h>
 #include <backends/imgui_impl_sdl3.h>
 #include <backends/imgui_impl_opengl3.h>
+//glm
+#include <gtc/type_ptr.hpp>
 
 struct AppState
 {
@@ -57,7 +60,7 @@ void InitializeRenderContext(RenderContext& renderContext)
 		return;
 	}
 
-	if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress))
+	if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(SDL_GL_GetProcAddress)))
 	{
 		std::cerr << "Failed to initialize GLAD" << std::endl;
 	}
@@ -81,7 +84,7 @@ void InitializeRenderContext(RenderContext& renderContext)
 
 //////////////////////////////////////////////////
 //~ handles keyboards
-void HandleInput(InputState& inputState, AppState& appState)
+void HandleInput(InputState& inputState, AppState& appState, RenderContext& renderContext)
 {
 	SDL_Event event;
 	while (SDL_PollEvent(&event) != 0)
@@ -97,6 +100,16 @@ void HandleInput(InputState& inputState, AppState& appState)
 			{
 				appState.showImGuiWindow = !appState.showImGuiWindow;
 			}
+			else if (event.key.scancode == SDL_SCANCODE_W)
+			{
+				renderContext.graphicsState.position.y += 0.01f;
+			}
+			else if (event.key.scancode == SDL_SCANCODE_S)
+			{
+				renderContext.graphicsState.position.y -= 0.01f;
+			}
+			renderContext.graphicsState.translate =
+				glm::translate(glm::mat4(1.0f), renderContext.graphicsState.position);
 		}
 
 		ImGui_ImplSDL3_ProcessEvent(&event);
@@ -147,13 +160,19 @@ void PreDraw(const GraphicsState& graphicsState)
 //~ begin to draw opengl
 void DrawGL(const GraphicsState& graphicsState)
 {
+	//color
 	GLint colorLoc = glGetUniformLocation(graphicsState.graphicsPipelineShaderProgram,
 										  "triangleColor");
 	glUniform4fv(colorLoc, 1, graphicsState.color);
 
+	//translate
+	GLint transformLoc = glGetUniformLocation(graphicsState.graphicsPipelineShaderProgram,
+											  "transform");
+	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(graphicsState.translate));
+
 	glBindVertexArray(graphicsState.vao);
 	glBindBuffer(GL_ARRAY_BUFFER, graphicsState.vbo);
-	glDrawArrays(GL_TRIANGLES, 0, 3);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)0);
 }
 
 //////////////////////////////////////////////////
@@ -187,7 +206,7 @@ void MainLoop(AppState& appState, RenderContext& renderContext, InputState& inpu
 {
 	while (!appState.quit)
 	{
-		HandleInput(inputState, appState);
+		HandleInput(inputState, appState, renderContext);
 		if (inputState.quitRequested)
 		{
 			appState.quit = true;
