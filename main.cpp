@@ -1,6 +1,7 @@
 #include <iostream>
 #include "SDL3/SDL_log.h"
 #include "graphics.h"
+#include "base.h"
 
 //gl
 #include <glad/glad.h>

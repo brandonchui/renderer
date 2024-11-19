@@ -5,3 +5,6 @@
 .clang-tidy
 CMakeLists.txt
 imgui.ini
+/.idea/
+.ignore
+/cmake-build-debug/
