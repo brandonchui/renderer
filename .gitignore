@@ -8,3 +8,4 @@ imgui.ini
 /.idea/
 .ignore
 /cmake-build-debug/
+run.bat

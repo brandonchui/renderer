@@ -1,6 +1,6 @@
 #pragma once
-#include "ext/matrix_transform.hpp"
-#include "ext/vector_float3.hpp"
+#include "glm/ext/matrix_transform.hpp"
+#include "glm/ext/vector_float3.hpp"
 #include <glad/glad.h>
 #include <string>
 
@@ -9,10 +9,10 @@
 #include <sstream>
 #include <cstdint>
 
-#include <vec3.hpp>
-#include <mat4x4.hpp>
-#include <glm.hpp>
-#include <gtc/matrix_transform.hpp>
+#include <glm/vec3.hpp>
+#include <glm/mat4x4.hpp>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 struct GraphicsState
 {
