@@ -21,6 +21,11 @@ void InitializeRenderer(RenderContext& context)
 
 	context.window = SDL_CreateWindow("Renderer", 640, 480,
 									  SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+
 	if (!context.window)
 	{
 		SDL_Log("Window could not be created");
