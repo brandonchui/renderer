@@ -1,0 +1,48 @@
+# Use grammars for C and C++
+use-grammars = { only = ["c", "cpp"] }
+
+# Language server configuration
+[language-server]
+clangd = { command = "clangd" }
+
+# C Language Configuration
+[[language]]
+name = "c"
+scope = "source.c"
+file-types = ["c"]
+comment-token = "//"
+block-comment-tokens = { start = "/*", end = "*/" }
+language-servers = ["clangd"]
+indent = { tab-width = 4, unit = "\t" }  # Adjust to your preference
+auto-format = true  # Enables format on save
+formatter = { command = "clang-format", args = ["--assume-filename", "file.c"] }
+
+# C++ Language Configuration
+[[language]]
+name = "cpp"
+scope = "source.cpp"
+file-types = ["cpp", "cxx", "cc", "hpp", "h"]
+comment-token = "//"
+block-comment-tokens = { start = "/*", end = "*/" }
+language-servers = ["clangd"]
+indent = { tab-width = 4, unit = "\t" }  # Adjust to your preference
+auto-format = true  # Enables format on save
+formatter = { command = "clang-format", args = ["--assume-filename", "file.cpp"] }
+
+# Debugger configuration for C and C++
+[language.debugger]
+name = "lldb-dap"
+transport = "stdio"
+command = "lldb-dap"
+
+[[language.debugger.templates]]
+name = "binary"
+request = "launch"
+completion = [{ name = "binary", completion = "filename" }]
+args = { console = "internalConsole", program = "{0}" }
+
+[[language.debugger.templates]]
+name = "attach"
+request = "attach"
+completion = ["pid"]
+args = { console = "internalConsole", pid = "{0}" }

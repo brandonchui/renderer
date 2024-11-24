@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.29)
 project(renderer)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -16,7 +16,6 @@ FetchContent_Declare(
 )
 
 FetchContent_MakeAvailable(SDL3)
-
 
 # ----------------------------
 # Fetch ImGui
@@ -41,12 +40,17 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(glm)
 
 # ----------------------------
-# Add Executable
+# Source files GLOB
 # ----------------------------
-add_executable(renderer 
-    src/main.cpp 
-    thirdparty/glad/src/glad.c
+file(GLOB_RECURSE RENDERER_SOURCES 
+    "src/*.cpp"
+    "src/*.c"
+    "thirdparty/glad/src/*.c"
+)
 
+file(GLOB_RECURSE RENDERER_HEADERS 
+    "src/*.h"
+    "src/*.hpp"
 )
 
 # ----------------------------
@@ -62,7 +66,13 @@ set(IMGUI_SRC
     ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp
 )
 
-target_sources(renderer PRIVATE ${IMGUI_SRC})
+# ----------------------------
+# Add Executable
+# ----------------------------
+add_executable(renderer 
+    ${RENDERER_SOURCES}
+    ${IMGUI_SRC}
+)
 
 # ----------------------------
 # Include Directories
