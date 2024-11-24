@@ -1,6 +1,7 @@
 
 // graphics_api.cpp
 #include "graphics_api.h"
+#include "glad/glad.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -122,7 +123,8 @@ void CleanupGraphicsAPI(GraphicsAPI& graphics)
 	}
 }
 
-void DrawFrame(const GraphicsAPI& graphics, const glm::mat4& transform, const float* color)
+void DrawFrame(const GraphicsAPI& graphics, const glm::mat4& transform,
+			   const glm::mat4& perspective, const float* color)
 {
 	glUseProgram(graphics.shaderProgram);
 
@@ -131,6 +133,10 @@ void DrawFrame(const GraphicsAPI& graphics, const glm::mat4& transform, const fl
 
 	GLint transformLoc = glGetUniformLocation(graphics.shaderProgram, "transform");
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+
+	//perspective
+	GLint perspectiveLoc = glGetUniformLocation(graphics.shaderProgram, "perspective");
+	glUniformMatrix4fv(perspectiveLoc, 1, GL_FALSE, glm::value_ptr(perspective));
 
 	glBindVertexArray(graphics.vao);
 	glBindBuffer(GL_ARRAY_BUFFER, graphics.vbo);

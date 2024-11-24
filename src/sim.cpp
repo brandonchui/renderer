@@ -1,4 +1,6 @@
 #include "sim.h"
+#include "SDL3/SDL_scancode.h"
+#include <SDL3/SDL_log.h>
 
 void ProcessInput(InputState& input, const SDL_Event& event)
 {
@@ -37,10 +39,20 @@ void UpdateSimulation(SimState& sim, const InputState& input, f32 deltaTime)
 
 	if (input.IsKeyPressed(SDL_SCANCODE_W))
 	{
-		sim.position.y += 2.0f * deltaTime;
+		sim.position.z += 2.0f * deltaTime;
 	}
 	if (input.IsKeyPressed(SDL_SCANCODE_S))
 	{
-		sim.position.y -= 2.0f * deltaTime;
+		sim.position.z -= 2.0f * deltaTime;
 	}
+	if (input.IsKeyPressed(SDL_SCANCODE_A))
+	{
+		sim.rotateY -= 175.0f * deltaTime;
+	}
+	if (input.IsKeyPressed(SDL_SCANCODE_D))
+	{
+		sim.rotateY += 175.0f * deltaTime;
+	}
+
+	SDL_Log("Current Radians: %f", sim.rotateY);
 }

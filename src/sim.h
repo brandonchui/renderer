@@ -3,6 +3,7 @@
 #include "sim_state.h"
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_scancode.h>
+#include "camera.h"
 
 struct InputState
 {
@@ -25,5 +26,13 @@ struct InputState
 	void UpdatePrevKeys() { memcpy(prevKeys, keys, sizeof(keys)); }
 };
 
+struct InputCamera
+{
+	glm::vec2 mouseDelta;
+	bool isMouseLocked;
+};
+
 void ProcessInput(InputState& input, const SDL_Event& event);
 void UpdateSimulation(SimState& sim, const InputState& input, f32 deltaTime);
+void UpdateCameraFromInput(CameraState* camera, const InputCamera* input, f32 deltaTime);
+void UpdateCameraMatrices(const CameraState* camera, CameraMatrices* matrices);

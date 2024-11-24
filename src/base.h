@@ -41,6 +41,15 @@ inline f32 GetDeltaTime(TimeState& time)
 	return (time.deltaTime > MAX_DELTA_TIME) ? MAX_DELTA_TIME : time.deltaTime;
 }
 
+//direction
+enum Direction
+{
+	Up,
+	Down,
+	Left,
+	Right
+};
+
 //math
 
 #endif

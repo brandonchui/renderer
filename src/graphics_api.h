@@ -21,4 +21,5 @@ struct GraphicsAPI
 
 void InitializeGraphicsAPI(GraphicsAPI& graphics);
 void CleanupGraphicsAPI(GraphicsAPI& graphics);
-void DrawFrame(const GraphicsAPI& graphics, const glm::mat4& transform, const f32* color);
+void DrawFrame(const GraphicsAPI& graphics, const glm::mat4& transform,
+			   const glm::mat4& perspective, const f32* color);

@@ -1,6 +1,7 @@
 
 // renderer.cpp
 #include "renderer.h"
+#include "glm/ext/matrix_clip_space.hpp"
 #include <imgui.h>
 #include <backends/imgui_impl_sdl3.h>
 #include <backends/imgui_impl_opengl3.h>
@@ -115,11 +116,18 @@ void RenderFrame(const RenderContext& context, const RenderCommand& cmd, SimStat
 {
 	PrepareDraw();
 
-	//testing
-	glm::mat4 transform = glm::translate(glm::mat4(1.0f), cmd.position);
+	//model matrix
+	glm::mat4 identityMatrix = glm::mat4(1.0f);
+	glm::mat4 model = glm::translate(identityMatrix, cmd.position);
+
+	model = glm::rotate(model, glm::radians(sim.rotateY), glm::vec3(0.0f, 1.0f, 0.0f));
+	//model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+
+	//perspective
+	glm::mat4 perspective = glm::perspective(glm::radians(45.0f), 640.0f / 480.0f, 0.1f, 10.0f);
 
 	//draw
-	DrawFrame(gGraphics, transform, cmd.color);
+	DrawFrame(gGraphics, model, perspective, cmd.color);
 	DrawImGui(cmd, context, sim);
 
 	//present
