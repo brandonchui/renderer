@@ -7,6 +7,7 @@
 #include <backends/imgui_impl_opengl3.h>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
+#include <SDL3/SDL_mouse.h>
 
 static GraphicsAPI gGraphics;
 
@@ -23,14 +24,17 @@ void InitializeRenderer(RenderContext& context)
 									  SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
 	if (!context.window)
 	{
 		SDL_Log("Window could not be created");
 		return;
 	}
+
+	//set fps camera mouse style
+	SDL_SetWindowRelativeMouseMode(context.window, true);
 
 	context.glContext = SDL_GL_CreateContext(context.window);
 	if (!context.glContext)
@@ -129,10 +133,13 @@ void RenderFrame(const RenderContext& context, const RenderCommand& cmd, SimStat
 	//model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
 
 	//perspective
-	glm::mat4 perspective = glm::perspective(glm::radians(45.0f), 640.0f / 480.0f, 0.1f, 10.0f);
+	// glm::mat4 perspective = glm::perspective(glm::radians(45.0f), 640.0f / 480.0f, 0.1f, 10.0f);
 
 	//draw
-	DrawFrame(gGraphics, model, perspective, cmd.color);
+
+	//mvp model view projection for camera
+	glm::mat4 viewProjection = sim.cameraMatrices.projection * sim.cameraMatrices.view;
+	DrawFrame(gGraphics, model, viewProjection, cmd.color);
 	DrawImGui(cmd, context, sim);
 
 	//present

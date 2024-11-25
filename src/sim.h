@@ -9,6 +9,11 @@ struct InputState
 {
 	static constexpr i16 MAX_KEYS = 512;
 
+	//current mouse pos
+	glm::vec2 mouseDelta = {};
+	bool middleMouseDown = false;
+	bool isPanning = false;
+
 	//current frame key
 	bool keys[MAX_KEYS] = {};
 
@@ -33,6 +38,6 @@ struct InputCamera
 };
 
 void ProcessInput(InputState& input, const SDL_Event& event);
-void UpdateSimulation(SimState& sim, const InputState& input, f32 deltaTime);
-void UpdateCameraFromInput(CameraState* camera, const InputCamera* input, f32 deltaTime);
-void UpdateCameraMatrices(const CameraState* camera, CameraMatrices* matrices);
+void UpdateSimulation(SimState& sim, InputState& input, f32 deltaTime);
+// void UpdateCameraFromInput(CameraState* camera, const InputCamera* input, f32 deltaTime);
+// void UpdateCameraMatrices(const CameraState* camera, CameraMatrices* matrices);
