@@ -46,6 +46,7 @@ file(GLOB_RECURSE RENDERER_SOURCES
     "src/*.cpp"
     "src/*.c"
     "thirdparty/glad/src/*.c"
+    "thirdparty/tinyobjloader/*.h"
 )
 
 file(GLOB_RECURSE RENDERER_HEADERS 
@@ -72,6 +73,7 @@ set(IMGUI_SRC
 add_executable(renderer 
     ${RENDERER_SOURCES}
     ${IMGUI_SRC}
+    tiny_obj_loader.cpp
 )
 
 # ----------------------------
@@ -80,6 +82,7 @@ add_executable(renderer
 target_include_directories(renderer PRIVATE 
     ${SDL3_SOURCE_DIR}/include 
     thirdparty/glad/include
+    thirdparty/tinyobjloader
     ${imgui_SOURCE_DIR} 
     ${imgui_SOURCE_DIR}/backends 
     ${glm_SOURCE_DIR}/

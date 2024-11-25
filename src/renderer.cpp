@@ -139,7 +139,17 @@ void RenderFrame(const RenderContext& context, const RenderCommand& cmd, SimStat
 
 	//mvp model view projection for camera
 	glm::mat4 viewProjection = sim.cameraMatrices.projection * sim.cameraMatrices.view;
+
+	//draw that starter quad
 	DrawFrame(gGraphics, model, viewProjection, cmd.color);
+
+	//draw model
+	if (sim.model.meshCount > 0)
+	{
+		DrawModel(&sim.model, model, viewProjection, gGraphics.shaderProgram);
+	}
+
+	//imgui
 	DrawImGui(cmd, context, sim);
 
 	//present
