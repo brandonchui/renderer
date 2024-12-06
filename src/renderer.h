@@ -10,6 +10,8 @@ struct RenderContext
 {
 	SDL_Window* window = nullptr;
 	SDL_GLContext glContext = nullptr;
+	i32 windowWidth = 640;
+	i32 windowHeight = 480;
 };
 
 struct RenderCommand

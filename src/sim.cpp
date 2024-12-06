@@ -14,6 +14,10 @@ void ProcessInput(InputState& input, const SDL_Event& event)
 		input.quitRequested = true;
 	}
 
+	if (event.type == SDL_EVENT_WINDOW_RESIZED)
+	{
+		//
+	}
 	if (event.type == SDL_EVENT_KEY_DOWN)
 	{
 		if (event.key.scancode < InputState::MAX_KEYS)
@@ -111,4 +115,10 @@ void UpdateSimulation(SimState& sim, InputState& input, f32 deltaTime)
 	//update matrices
 	sim.cameraMatrices.view = CalculateViewMatrix(&sim.cameraTransform);
 	sim.cameraMatrices.projection = CalculateProjectionMatrix(&sim.cameraProjection);
+}
+
+void SetCameraCursorLock(SDL_Window* win, bool locked)
+{
+	//toggles focus camera
+	SDL_SetWindowRelativeMouseMode(win, locked);
 }

@@ -14,6 +14,8 @@ struct InputState
 	bool middleMouseDown = false;
 	bool isPanning = false;
 
+	//camera lock
+	bool isCameraLocked = true;
 	//current frame key
 	bool keys[MAX_KEYS] = {};
 
@@ -41,3 +43,4 @@ void ProcessInput(InputState& input, const SDL_Event& event);
 void UpdateSimulation(SimState& sim, InputState& input, f32 deltaTime);
 // void UpdateCameraFromInput(CameraState* camera, const InputCamera* input, f32 deltaTime);
 // void UpdateCameraMatrices(const CameraState* camera, CameraMatrices* matrices);
+void SetCameraCursorLock(SDL_Window* win, bool locked);
